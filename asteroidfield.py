@@ -1,29 +1,35 @@
 import pygame
 import random
 from asteroid import Asteroid
-from constants import *
+import constants
 
 
 class AsteroidField(pygame.sprite.Sprite):
     edges = [
         [
             pygame.Vector2(1, 0),
-            lambda y: pygame.Vector2(-ASTEROID_MAX_RADIUS, y * SCREEN_HEIGHT),
+            lambda y: pygame.Vector2(
+                -constants.SPCROCK_MAX_RAD, y * constants.SCRN_HT
+                ),
         ],
         [
             pygame.Vector2(-1, 0),
             lambda y: pygame.Vector2(
-                SCREEN_WIDTH + ASTEROID_MAX_RADIUS, y * SCREEN_HEIGHT
+                constants.SCRN_WD + constants.SPCROCK_MAX_RAD,
+                y * constants.SCRN_HT
             ),
         ],
         [
             pygame.Vector2(0, 1),
-            lambda x: pygame.Vector2(x * SCREEN_WIDTH, -ASTEROID_MAX_RADIUS),
+            lambda x: pygame.Vector2(
+                x * constants.SCRN_WD, -constants.SPCROCK_MAX_RAD
+                ),
         ],
         [
             pygame.Vector2(0, -1),
             lambda x: pygame.Vector2(
-                x * SCREEN_WIDTH, SCREEN_HEIGHT + ASTEROID_MAX_RADIUS
+                x * constants.SCRN_WD,
+                constants.SCREEN_HEIGHT + constants.SPCROCK_MAX_RAD
             ),
         ],
     ]
@@ -38,7 +44,7 @@ class AsteroidField(pygame.sprite.Sprite):
 
     def update(self, dt):
         self.spawn_timer += dt
-        if self.spawn_timer > ASTEROID_SPAWN_RATE:
+        if self.spawn_timer > constants.SPCROCK_SPAWN_RATE:
             self.spawn_timer = 0
 
             # spawn a new asteroid at a random edge
@@ -47,5 +53,5 @@ class AsteroidField(pygame.sprite.Sprite):
             velocity = edge[0] * speed
             velocity = velocity.rotate(random.randint(-30, 30))
             position = edge[1](random.uniform(0, 1))
-            kind = random.randint(1, ASTEROID_KINDS)
-            self.spawn(ASTEROID_MIN_RADIUS * kind, position, velocity)
+            kind = random.randint(1, constants.SPCROCK_KINDS)
+            self.spawn(constants.SPCROCK_MIN_RAD * kind, position, velocity)

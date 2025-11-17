@@ -1,21 +1,25 @@
 import pygame
-from constants import *
+import constants
 from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from shot import Shot
-from logger import *
+from logger import log_state, log_event
+
 
 def main():
     print("Starting Asteroids!")
-    print(f"Screen width: {SCREEN_WIDTH}\nScreen height: {SCREEN_HEIGHT}")
+    print(f"Screen width: {constants.SCRN_WD}")
+    print(f"Screen height: {constants.SCRN_HT}")
 
     pygame.init()
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    screen = pygame.display.set_mode(
+        (constants.SCRN_WD, constants.SCRN_HT)
+        )
     clock = pygame.time.Clock()
-    
+
     updatable = pygame.sprite.Group()
-    drawable =  pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
     shots = pygame.sprite.Group()
 
@@ -25,31 +29,27 @@ def main():
     Shot.containers = (shots, updatable, drawable)
 
     asteroid = AsteroidField()
-    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    player = Player(constants.SCRN_WIDTH / 2, constants.SCRN_HT / 2)
 
     dt = 0
-  
     while True:
         log_state()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
-            
         updatable.update(dt)
 
         for obj in asteroids:
-            if obj.collision_check(player) == True:
+            if obj.collision_check(player):
                 print("Game Over!")
                 raise SystemExit
-        
         for asteroid in asteroids:
             for shot in shots:
-                if shot.collision_check(asteroid) == True:
+                if shot.collision_check(asteroid):
                     log_event("asteroid_shot")
                     shot.kill()
                     asteroid.split()
-        
         screen.fill("black")
 
         for item in drawable:
@@ -59,9 +59,6 @@ def main():
 
         dt = clock.tick(60) / 1000
 
-            
+
 if __name__ == "__main__":
     main()
-    
-
-
