@@ -4,8 +4,8 @@ import pygame
 
 
 class Shot(CircleShape):
-    radius = constants.SHOT_RADIUS
-    
+    radius = constants.SHOT_RAD
+
     def __init__(self, x, y, radius):
         super().__init__(x, y, radius)
 

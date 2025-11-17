@@ -29,7 +29,7 @@ class AsteroidField(pygame.sprite.Sprite):
             pygame.Vector2(0, -1),
             lambda x: pygame.Vector2(
                 x * constants.SCRN_WD,
-                constants.SCREEN_HEIGHT + constants.SPCROCK_MAX_RAD
+                constants.SCRN_HT + constants.SPCROCK_MAX_RAD
             ),
         ],
     ]
